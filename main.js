@@ -1,55 +1,20 @@
 // @ts-check
+//saving a reference to the HTML objects
 const inputElement = document.getElementById("item");
-if(!(inputElement instanceof HTMLInputElement)) {
-    throw new Error('Input element is not an input!');
+const buttonAdd = document.getElementById("addItem");
+const completedList = document.getElementById("completed");
+const todoList = document.getElementById("todo");
+
+if (!(inputElement instanceof HTMLInputElement)) {
+  throw new Error("Input element is not an input!");
 }
 
 const data = localStorage.getItem("todoList")
   ? JSON.parse(localStorage.getItem("todoList"))
   : {
       todo: [],
-      completed: []
+      completed: [],
     };
-
-document.getElementById("addItem").addEventListener("click", function() {
-  const taskText = inputElement.value;
-
-  if (taskText) {
-    addItemTodo(taskText);
-    inputElement.value = "";
-
-    data.todo.push(taskText);
-    dataObjectUpdated();
-  }
-});
-
-inputElement.addEventListener("keydown", function(event) {
-  const taskText = inputElement.value;
-
-  if (event.code === "Enter" || event.code === "NumpadEnter") {
-    event.preventDefault();
-
-    addItemTodo(taskText);
-    inputElement.value = "";
-
-    data.todo.push(taskText);
-    dataObjectUpdated();
-  }
-});
-
-const renderTodoList = () => {
-  if (!data.todo.length && !data.completed.length) return;
-
-  for (let i = 0; i < data.todo.length; i++) {
-    const value = data.todo[i];
-    addItemTodo(value);
-  }
-
-  for (let j = 0; j < data.completed.length; j++) {
-    const value = data.completed[j];
-    addItemTodo(value, true);
-  }
-}
 
 function dataObjectUpdated() {
   localStorage.setItem("todoList", JSON.stringify(data));
@@ -97,8 +62,8 @@ function completeItem() {
   target.insertBefore(item, target.childNodes[0]);
 }
 
-function addItemTodo(taskText, completed) {
-  const list = completed ? document.getElementById("completed") : document.getElementById("todo");
+const addItemTodo = (taskText, completed) => {
+  const list = completed ? completedList : todoList;
 
   const item = document.createElement("li");
   item.innerText = taskText;
@@ -120,6 +85,46 @@ function addItemTodo(taskText, completed) {
   buttons.appendChild(completeButton);
   item.appendChild(buttons);
   list.insertBefore(item, list.childNodes[0]);
-}
+};
+
+const renderTodoList = () => {
+  if (!data.todo.length && !data.completed.length) return;
+
+  for (let i = 0; i < data.todo.length; i++) {
+    const value = data.todo[i];
+    addItemTodo(value);
+  }
+
+  for (let j = 0; j < data.completed.length; j++) {
+    const value = data.completed[j];
+    addItemTodo(value, true);
+  }
+};
+
+buttonAdd.addEventListener("click", () => {
+  const taskText = inputElement.value;
+
+  if (taskText) {
+    addItemTodo(taskText);
+    inputElement.value = "";
+
+    data.todo.push(taskText);
+    dataObjectUpdated();
+  }
+});
+
+inputElement.addEventListener("keydown", (event) => {
+  const taskText = inputElement.value;
+
+  if (event.code === "Enter" || event.code === "NumpadEnter") {
+    event.preventDefault();
+
+    addItemTodo(taskText);
+    inputElement.value = "";
+
+    data.todo.push(taskText);
+    dataObjectUpdated();
+  }
+});
 
 renderTodoList();
