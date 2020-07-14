@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap");
+@import "./header.css";
+@import "./list-styles.css";
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+body,
+input,
+button {
+  font-family: "Roboto", sans-serif;
+  background-color: #edf0f1;
+}
+
+.wrapper {
+  width: 50vw;
+  margin: 0 auto;
+  padding-top: 80px;
+  position: relative;
+}
+
+.container {
+  padding: 1em;
+}

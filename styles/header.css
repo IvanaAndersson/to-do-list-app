@@ -1,0 +1,73 @@
+header {
+  width: 100%;
+  height: 80px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background: #25b99a;
+  box-shadow: 0 2px 4px rgba(44, 62, 80, 0.15);
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 15px;
+}
+
+header input {
+  width: 100%;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  color: #fff;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  font-size: 15px;
+  font-weight: 400;
+  text-indent: 1rem;
+  padding-right: calc(1rem + 40px);
+}
+
+header input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+header button {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 2;
+  border-radius: 25px;
+  background: #fff;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+header button::before,
+header button::after {
+  content: "";
+  display: inline-block;
+  background: #25b99a;
+}
+
+header button::before {
+  width: 3px;
+  height: 30px;
+}
+
+header button::after {
+  width: 30px;
+  height: 3px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
