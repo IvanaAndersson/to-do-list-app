@@ -20,6 +20,31 @@ function dataObjectUpdated() {
   localStorage.setItem("todoList", JSON.stringify(data));
 }
 
+const createElement = (type, content, attributes) => {
+  //make a function which creates an element of a given type
+  const element = document.createElement(type);
+
+  if (attributes !== undefined) {
+    Object.assign(element, attributes);
+  }
+
+  if (Array.isArray(content)) {
+    content.forEach(append);
+  } else {
+    append(content);
+  }
+
+  function append(node) {
+    if (typeof node === "string") {
+      node = document.createTextNode(node);
+    }
+
+    element.appendChild(node);
+  }
+
+  return element;
+};
+
 function removeItem() {
   const button = this;
   const div = button.parentNode;
@@ -64,41 +89,27 @@ function completeItem() {
 
 const addItemTodo = (taskText, completed) => {
   const list = completed ? completedList : todoList;
-
-  const item = document.createElement("li");
-  item.innerText = taskText;
-
-  const buttons = document.createElement("div");
-  buttons.classList.add("buttons");
-
-  const removeButton = document.createElement("button");
-  removeButton.classList.add("remove");
+  //creating the additional elements
+  const removeButton = createElement("button", "", { classList: "remove" });
+  const completeButton = createElement("button", "", { classList: "complete" });
+  const buttons = createElement("div", [removeButton, completeButton], {
+    classList: "buttons",
+  });
+  const item = createElement("li", [taskText, buttons]);
   // add click even for removing an item
   removeButton.addEventListener("click", removeItem);
-
-  const completeButton = document.createElement("button");
-  completeButton.classList.add("complete");
   //add click event to completing an item
   completeButton.addEventListener("click", completeItem);
 
-  buttons.appendChild(removeButton);
-  buttons.appendChild(completeButton);
-  item.appendChild(buttons);
   list.insertBefore(item, list.childNodes[0]);
 };
 
 const renderTodoList = () => {
   if (!data.todo.length && !data.completed.length) return;
 
-  for (let i = 0; i < data.todo.length; i++) {
-    const value = data.todo[i];
-    addItemTodo(value);
-  }
+  data.todo.forEach((el) => addItemTodo(el));
 
-  for (let j = 0; j < data.completed.length; j++) {
-    const value = data.completed[j];
-    addItemTodo(value, true);
-  }
+  data.completed.forEach((el) => addItemTodo(el, true));
 };
 
 buttonAdd.addEventListener("click", () => {
